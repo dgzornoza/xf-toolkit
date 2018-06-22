@@ -9,19 +9,6 @@ using Urho.Urho2D;
 namespace XamarinForms.Toolkit.Urho3D.Rube
 {
 
-    internal static class Helpers
-    {
-        public static IEnumerable<T> GetRecursiveComponents<T>(this Node node)
-        {
-            List<T> components = node.Components.OfType<T>().ToList();
-
-            // si se procesa en cascada, se hace lo mismo en los nodos hijos recursivamente
-            foreach (var child in node.Children) components.AddRange(child.GetRecursiveComponents<T>());
-
-            return components;
-        }
-    }
-
     public class B2dJsonColor4
     {
         public B2dJsonColor4() { R = G = B = A = 255; }
@@ -165,7 +152,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         /// b2djson do not maintain the tree structure of nodes with the physical components from urho2d, 
         /// so that if it is loaded, the structure of nodes will be different from the current one.
         /// </remarks>
-        public JObject WriteToValue(Node urhoNode)
+        public JObject WriteToValue(Urho.Node urhoNode)
         {
             if (null == urhoNode || null == urhoNode.Scene.GetComponent<PhysicsWorld2D>()) return new JObject();
 
@@ -181,7 +168,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         /// b2djson do not maintain the tree structure of nodes with the physical components from urho2d, 
         /// so that if it is loaded, the structure of nodes will be different from the current one.
         /// </remarks>
-        public string WriteToString(Node urhoNode)
+        public string WriteToString(Urho.Node urhoNode)
         {
             if (null == urhoNode || null == urhoNode.Scene.GetComponent<PhysicsWorld2D>()) return string.Empty;
 
@@ -199,7 +186,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         /// b2djson do not maintain the tree structure of nodes with the physical components from urho2d, 
         /// so that if it is loaded, the structure of nodes will be different from the current one.
         /// </remarks>
-        public bool WriteToFile(Node urhoNode, string filename, out string errorMsg)
+        public bool WriteToFile(Urho.Node urhoNode, string filename, out string errorMsg)
         {
             errorMsg = string.Empty;            
             if (null == urhoNode || string.IsNullOrWhiteSpace(filename) || null == urhoNode.Scene.GetComponent<PhysicsWorld2D>()) return false;
@@ -221,7 +208,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         }
 
 
-        public JObject B2j(Node urhoNode)
+        public JObject B2j(Urho.Node urhoNode)
         {
             PhysicsWorld2D world = urhoNode.Scene.GetComponent<PhysicsWorld2D>();
 
@@ -669,7 +656,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         /// <param name="urhoNode">Urho2d node where will be loaded</param>
         /// <param name="includeWorld">Flag for include world (true include world, false otherwise)</param>
         /// <returns>true if can read, false otherwise</returns>
-        public bool ReadIntoNodeFromValue(JObject b2djsonWorld, Node urhoNode, bool includeWorld)
+        public bool ReadIntoNodeFromValue(JObject b2djsonWorld, Urho.Node urhoNode, bool includeWorld)
         {
             J2b2World(b2djsonWorld, urhoNode, includeWorld);
             return true;
@@ -683,7 +670,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         /// <param name="includeWorld">Flag for include world (true include world, false otherwise)</param>
         /// <param name="errorMsg">error message</param>
         /// <returns>true if can read, false otherwise</returns>
-        public bool ReadIntoNodeFromString(string str, Node urhoNode, bool includeWorld, out string errorMsg)
+        public bool ReadIntoNodeFromString(string str, Urho.Node urhoNode, bool includeWorld, out string errorMsg)
         {
             errorMsg = null;
             bool hasError;
@@ -711,7 +698,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         /// <param name="includeWorld">Flag for include world (true include world, false otherwise)</param>
         /// <param name="errorMsg">error message</param>
         /// <returns>true if can read, false otherwise</returns>
-        public bool ReadIntoNodeFromFile(string filename, Node urhoNode, bool includeWorld, out string errorMsg)
+        public bool ReadIntoNodeFromFile(string filename, Urho.Node urhoNode, bool includeWorld, out string errorMsg)
         {
             errorMsg = null;
             bool hasError;
@@ -743,7 +730,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         /// <param name="urhoNode">urho2d node where will be loaded</param>
         /// <param name="includeWorld">Flag for include world (true include world, false otherwise)</param>
         /// <returns>urhoNode for fluent api</returns>
-        public Node J2b2World(JObject worldValue, Node urhoNode, bool includeWorld)
+        public Urho.Node J2b2World(JObject worldValue, Urho.Node urhoNode, bool includeWorld)
         {
             if (null == urhoNode) throw new ArgumentNullException("urhoNode");
 
@@ -834,7 +821,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         }
 
 
-        public RigidBody2D J2b2Body(Node bodyNode, JObject bodyValue)
+        public RigidBody2D J2b2Body(Urho.Node bodyNode, JObject bodyValue)
         {
 
             RigidBody2D body = bodyNode.CreateComponent<RigidBody2D>(mode: m_creationMode);
