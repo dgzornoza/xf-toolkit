@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Urho;
 using Urho.Urho2D;
+using XamarinForms.Toolkit.Helpers;
 
 namespace XamarinForms.Toolkit.Urho3D.Rube
 {
@@ -139,6 +140,14 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
             m_jointToPathMap.Clear();
             m_imageToPathMap.Clear();
         }
+
+
+        #region [static functions]
+
+
+
+        #endregion [static functions]
+
 
 
         #region [writing functions]
@@ -655,11 +664,9 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         /// <param name="b2djsonWorld">physic world in b2djson format from R.U.B.E editor</param>
         /// <param name="urhoNode">Urho2d node where will be loaded</param>
         /// <param name="includeWorld">Flag for include world (true include world, false otherwise)</param>
-        /// <returns>true if can read, false otherwise</returns>
-        public bool ReadIntoNodeFromValue(JObject b2djsonWorld, Urho.Node urhoNode, bool includeWorld)
+        public void ReadIntoNodeFromValue(JObject b2djsonWorld, Urho.Node urhoNode, bool includeWorld, string urhoImagesPath)
         {
             J2b2World(b2djsonWorld, urhoNode, includeWorld);
-            return true;
         }
 
         /// <summary>
@@ -668,26 +675,18 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         /// <param name="str">string with physic world in b2djson format from R.U.B.E editor</param>
         /// <param name="urhoNode">Urho2d node where will be loaded</param>
         /// <param name="includeWorld">Flag for include world (true include world, false otherwise)</param>
-        /// <param name="errorMsg">error message</param>
-        /// <returns>true if can read, false otherwise</returns>
-        public bool ReadIntoNodeFromString(string str, Urho.Node urhoNode, bool includeWorld, out string errorMsg)
+        public void ReadIntoNodeFromString(string str, Urho.Node urhoNode, bool includeWorld, string urhoImagesPath)
         {
-            errorMsg = null;
-            bool hasError;
-
             try
             {
                 JObject worldValue = JObject.Parse(str);
                 J2b2World(worldValue, urhoNode, includeWorld);
-                hasError = false;
             }
             catch (IOException ex)
             {
-                errorMsg = $"Failed to parse JSON: {ex.Message}";
-                hasError = true;
+                ex.RegisterException<B2dJson>();
+                throw;
             }
-
-            return hasError;
         }
 
         /// <summary>
@@ -696,13 +695,8 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         /// <param name="filename">file with physic world in b2djson format from R.U.B.E editor</param>
         /// <param name="urhoNode">Urho2d node where will be loaded</param>
         /// <param name="includeWorld">Flag for include world (true include world, false otherwise)</param>
-        /// <param name="errorMsg">error message</param>
-        /// <returns>true if can read, false otherwise</returns>
-        public bool ReadIntoNodeFromFile(string filename, Urho.Node urhoNode, bool includeWorld, out string errorMsg)
+        public void ReadIntoNodeFromFile(string filename, Urho.Node urhoNode, bool includeWorld)
         {
-            errorMsg = null;
-            bool hasError;
-
             try
             {
                 if (string.IsNullOrWhiteSpace(filename)) throw new ArgumentNullException("Param filename is null or empty");
@@ -710,16 +704,15 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
                 string str = System.IO.File.ReadAllText(filename);
                 JObject worldValue = JObject.Parse(str);
                 J2b2World(worldValue, urhoNode, includeWorld);
-                hasError = false;
             }
             catch (IOException ex)
             {
-                errorMsg = $"Error reading file: {filename}, {ex.Message}";
-                hasError = true;
+                ex.RegisterException<B2dJson>();
+                throw;
             }
-
-            return hasError;
         }
+
+
 
 
 
@@ -1230,6 +1223,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
 
             return img;
         }
+
 
         #endregion [reading functions]
 
