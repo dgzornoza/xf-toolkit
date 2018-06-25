@@ -6,7 +6,7 @@ using Urho;
 
 namespace XamarinForms.Toolkit.Urho3D
 {
-    public static class NodeExtensions
+    public static class NodeHelpers
     {
         public static IEnumerable<T> GetRecursiveComponents<T>(this Urho.Node node)
         {
