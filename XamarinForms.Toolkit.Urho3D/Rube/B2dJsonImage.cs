@@ -300,7 +300,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         private void _setMat33Rotation(_b2Mat33 mat, float angle)
         {
             mat.SetZero();
-            float c = (float)Math.Cos(angle), s = (float)Math.Sin(angle);
+            float c = (float)System.Math.Cos(angle), s = (float)System.Math.Sin(angle);
             mat.Ex.X = c; mat.Ey.X = -s;
             mat.Ex.Y = s; mat.Ey.Y = c;
             mat.Ez.Z = 1;
