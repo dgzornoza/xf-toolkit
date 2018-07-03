@@ -89,7 +89,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         /// <summary>
         /// default constructor
         /// </summary>
-        public B2dJson(CreateMode creationMode = CreateMode.Local, bool useHumanReadableFloats = false)
+        public B2dJson(CreateMode creationMode = CreateMode.Replicated, bool useHumanReadableFloats = false)
         {
             m_creationMode = creationMode;
             m_useHumanReadableFloats = useHumanReadableFloats;

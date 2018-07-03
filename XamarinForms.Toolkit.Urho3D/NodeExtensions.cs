@@ -12,12 +12,17 @@ namespace XamarinForms.Toolkit.Urho3D
         {
             List<T> components = node.Components.OfType<T>().ToList();
 
-            // si se procesa en cascada, se hace lo mismo en los nodos hijos recursivamente
+            // call recursive in childrens
             foreach (var child in node.Children) components.AddRange(child.GetRecursiveComponents<T>());
-
+            
             return components;
         }
-        
+
+        /// <summary>
+        /// function to verify if a node leaves the screen, in which case, it will be positioned on the other side
+        /// </summary>
+        /// <param name="node">Node to check</param>
+        /// <param name="camera">Camera with screen limits</param>
         public static void MirrorIfExitScreen(this Urho.Node node, Camera camera)
         {            
             if (null == node) return;
