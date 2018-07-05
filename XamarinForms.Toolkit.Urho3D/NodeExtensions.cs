@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using Urho;
 
@@ -8,13 +9,29 @@ namespace XamarinForms.Toolkit.Urho3D
 {
     public static class NodeExtensions
     {
+        #region [Hacks]
+
+
+        [DllImport("mono-urho", CallingConvention = CallingConvention.Cdecl)]
+        private static extern string Node_GetVar11(IntPtr handle, int key);
+        /// <summary>
+        /// Hack for GetVar (Currently not found in urhosharp). this should be removed when exists in library.
+        /// </summary>
+        public static string GetVar(this Node node, StringHash key)
+        {
+            return Node_GetVar11(node.Handle, key.Code);
+        }
+
+        #endregion [Hacks]
+
+
         public static IEnumerable<T> GetRecursiveComponents<T>(this Urho.Node node)
         {
             List<T> components = node.Components.OfType<T>().ToList();
 
             // call recursive in childrens
             foreach (var child in node.Children) components.AddRange(child.GetRecursiveComponents<T>());
-            
+
             return components;
         }
 
@@ -24,7 +41,7 @@ namespace XamarinForms.Toolkit.Urho3D
         /// <param name="node">Node to check</param>
         /// <param name="camera">Camera with screen limits</param>
         public static void MirrorIfExitScreen(this Urho.Node node, Camera camera)
-        {            
+        {
             if (null == node) return;
 
             Vector2 position = camera.WorldToScreenPoint(node.Position);
