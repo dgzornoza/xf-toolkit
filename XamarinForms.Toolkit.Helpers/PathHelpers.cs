@@ -8,7 +8,7 @@ namespace XamarinForms.Toolkit.Helpers
     /// <summary>
     /// Helpers for manage paths
     /// </summary>
-    public static class Path
+    public static class PathHelpers
     {
         /// <summary>
         /// Simplifies path, by removed upper folder dots references "folder\..\folder2" will be converted in "folder2"

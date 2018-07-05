@@ -11,7 +11,7 @@ namespace XamarinForms.Toolkit.Helpers
     /// <summary>
     /// Helpers para trabajar con el arbol visual xaml
     /// </summary>
-    public static class VisualTree
+    public static class VisualTreeHelpers
     {
 
         /// <summary>

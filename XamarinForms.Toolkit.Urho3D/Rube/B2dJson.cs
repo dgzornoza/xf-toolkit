@@ -197,7 +197,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         /// </remarks>
         public bool WriteToFile(Urho.Node urhoNode, string filename, out string errorMsg)
         {
-            errorMsg = string.Empty;            
+            errorMsg = string.Empty;
             if (null == urhoNode || string.IsNullOrWhiteSpace(filename) || null == urhoNode.Scene.GetComponent<PhysicsWorld2D>()) return false;
 
             using (TextWriter writeFile = new StreamWriter(filename))
@@ -664,9 +664,17 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         /// <param name="b2djsonWorld">physic world in b2djson format from R.U.B.E editor</param>
         /// <param name="urhoNode">Urho2d node where will be loaded</param>
         /// <param name="includeWorld">Flag for include world (true include world, false otherwise)</param>
-        public void ReadIntoNodeFromValue(JObject b2djsonWorld, Urho.Node urhoNode, bool includeWorld, string urhoImagesPath)
+        public void ReadIntoNodeFromValue(JObject b2djsonWorld, Urho.Node urhoNode, bool includeWorld)
         {
-            J2b2World(b2djsonWorld, urhoNode, includeWorld);
+            try
+            {
+                J2b2World(b2djsonWorld, urhoNode, includeWorld);
+            }
+            catch (IOException ex)
+            {
+                ex.RegisterException<B2dJson>();
+                throw;
+            }
         }
 
         /// <summary>
@@ -675,7 +683,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         /// <param name="str">string with physic world in b2djson format from R.U.B.E editor</param>
         /// <param name="urhoNode">Urho2d node where will be loaded</param>
         /// <param name="includeWorld">Flag for include world (true include world, false otherwise)</param>
-        public void ReadIntoNodeFromString(string str, Urho.Node urhoNode, bool includeWorld, string urhoImagesPath)
+        public void ReadIntoNodeFromString(string str, Urho.Node urhoNode, bool includeWorld)
         {
             try
             {
@@ -915,7 +923,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
                 CollisionChain2D chainFixture = body.Node.CreateComponent<CollisionChain2D>(mode: m_creationMode);
                 JObject chainValue = (JObject)fixtureValue["chain"];
                 int numVertices = ((JArray)chainValue["vertices"]["x"]).Count;
-                chainFixture.VertexCount = (uint)numVertices;                
+                chainFixture.VertexCount = (uint)numVertices;
                 for (int i = 0; i < numVertices; i++) chainFixture.SetVertex((uint)i, JsonToVec("vertices", chainValue, i));
 
                 // Urho2d not has next/previous vertex, only has loop.
@@ -1364,7 +1372,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
 
         public IEnumerable<RigidBody2D> GetBodiesByCustomValueType<T>(string propertyName, T valueToMatch)
         {
-            return m_bodiesWithCustomProperties.Where(item => HasCustomValueType<T>(item, propertyName) &&  GetCustomValueType<T>(item, propertyName).Equals(valueToMatch));
+            return m_bodiesWithCustomProperties.Where(item => HasCustomValueType<T>(item, propertyName) && GetCustomValueType<T>(item, propertyName).Equals(valueToMatch));
         }
         public IEnumerable<CollisionShape2D> GetFixturesByCustomValueType<T>(string propertyName, T valueToMatch)
         {
@@ -1602,8 +1610,8 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         protected void ReadCustomPropertiesFromJson<T>(T item, JObject value)
         {
             JArray propValues = (JArray)value["customProperties"];
-            if (null == item || null == propValues) return;            
-            
+            if (null == item || null == propValues) return;
+
             for (int i = 0; i < propValues.Count; i++)
             {
                 JObject propValue = (JObject)propValues[i];
@@ -1625,11 +1633,11 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
                             B = (int)colorJArray[2],
                             A = (int)colorJArray[3],
                         };
-                        
+
                         SetCustomColor(item, propertyName, color4);
                     }
                 }
-            }            
+            }
         }
 
         #endregion [member helpers]
@@ -1637,6 +1645,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
 
 
         #region [static helpers]
+
 
         public static string FloatToHex(float f)
         {
@@ -1646,7 +1655,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
         }
 
         public static float HexToFloat(string str)
-        {            
+        {
             uint num = uint.Parse(str, System.Globalization.NumberStyles.AllowHexSpecifier);
 
             byte[] floatVals = BitConverter.GetBytes(num);
@@ -1705,6 +1714,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
 
             return vec;
         }
+
 
         #endregion [static helpers]
 

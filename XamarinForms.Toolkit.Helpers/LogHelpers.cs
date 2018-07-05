@@ -13,7 +13,7 @@ namespace XamarinForms.Toolkit.Helpers
     /// <summary>
     /// Clase de ayuda con funcionalidades comunes de ayuda para el uso de un registro de log
     /// </summary>
-    public static class Log
+    public static class LogHelpers
     {
 
         #region [Variables miembro]
@@ -70,7 +70,7 @@ namespace XamarinForms.Toolkit.Helpers
         /// <summary>
         /// Constructor estatico de la clase para inicializar el helper
         /// </summary>
-        static Log()
+        static LogHelpers()
         {
             // crear el directorio por defecto donde seran almacenados los logs
             LogPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -229,16 +229,16 @@ namespace XamarinForms.Toolkit.Helpers
             EnumWarningLevel warningLevel = EnumWarningLevel.LEVEL_3)
         {
             // verificar si es un warning, el nivel para no registrarse
-            if (entryType == EnumLogType.WARNING && (int)warningLevel > (int)Log._warningLevel) return;
+            if (entryType == EnumLogType.WARNING && (int)warningLevel > (int)LogHelpers._warningLevel) return;
 
             // obtener la cadena con el log formateado
-            string logString = Log._getLogStringFormat(log, entryType, type, method);
+            string logString = LogHelpers._getLogStringFormat(log, entryType, type, method);
             // mostrar el log en los resultados del depurador
-            Log._showInDebugger(log);
+            LogHelpers._showInDebugger(log);
 
             // registrar en archivo de texto, usar el nombre del parametro de entrada, en caso de no existir, sera el nombre de la propiedad, 
             // si no existe tampoco, sera usado el nombre por defecto
-            Log._writeFile(filename ?? LogFileName, logString);
+            LogHelpers._writeFile(filename ?? LogFileName, logString);
         }
 
         /// <summary>

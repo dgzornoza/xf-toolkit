@@ -25,7 +25,7 @@ namespace XamarinForms.Toolkit.Helpers
             if (_exception == null) return;
 
             // formatear la excepcion en una cadena y registrar en el log
-            Log.RegisterLog(_exception._getExceptionStringFormat(_infoEx), Log.EnumLogType.ERROR, typeof(T), _exception.TargetSite.Name);
+            LogHelpers.RegisterLog(_exception._getExceptionStringFormat(_infoEx), LogHelpers.EnumLogType.ERROR, typeof(T), _exception.TargetSite.Name);
         }
 
         /// <summary>
