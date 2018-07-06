@@ -25,5 +25,22 @@ namespace XamarinForms.Toolkit.Helpers
             }
             return path;
         }
+		
+        /// <summary>
+        /// Ensure end slash in path
+        /// </summary>
+        /// <param name="path">Path for ensure end slash</param>
+        /// <returns>Path with end slash</returns>
+        public static string EnsureEndSlash(string path)
+        {
+            string separator1 = Path.DirectorySeparatorChar.ToString();
+            string separator2 = Path.AltDirectorySeparatorChar.ToString();
+
+            path = path.TrimEnd();
+
+            if (path.EndsWith(separator1) || path.EndsWith(separator2)) return path;
+            if (path.Contains(separator2)) return path + separator2;
+            return path + separator1;
+        }	
     }
 }
