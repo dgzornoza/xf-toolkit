@@ -24,13 +24,19 @@ namespace XamarinForms.Toolkit.Urho3D
 
         #endregion [Hacks]
 
-
-        public static IEnumerable<T> GetRecursiveComponents<T>(this Urho.Node node)
+        /// <summary>
+        /// Function for get specified type components (including inherited types)
+        /// </summary>
+        /// <typeparam name="T">Component type</typeparam>
+        /// <param name="node">Node where search components</param>
+        /// <param name="recursive">true if reursive, false otherwise</param>
+        /// <returns>Enumerable components found</returns>
+        public static IEnumerable<T> GetInheritedComponents<T>(this Urho.Node node, bool recursive = false)
         {
             List<T> components = node.Components.OfType<T>().ToList();
 
             // call recursive in childrens
-            foreach (var child in node.Children) components.AddRange(child.GetRecursiveComponents<T>());
+            if (recursive) foreach (var child in node.Children) components.AddRange(child.GetInheritedComponents<T>(true));
 
             return components;
         }

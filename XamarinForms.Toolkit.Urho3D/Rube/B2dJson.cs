@@ -240,7 +240,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
             // Body
             int index = 0;
             JArray jArray = new JArray();
-            IEnumerable<RigidBody2D> nodeBodyList = urhoNode.GetRecursiveComponents<RigidBody2D>();
+            IEnumerable<RigidBody2D> nodeBodyList = urhoNode.GetInheritedComponents<RigidBody2D>(true);
             foreach (var item in nodeBodyList)
             {
                 m_bodyToIndexMap.Add(item, index);
@@ -253,7 +253,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
             // need two passes for joints because gear joints reference other joints
             index = 0;
             jArray = new JArray();
-            IEnumerable<Constraint2D> nodeJointList = urhoNode.GetRecursiveComponents<Constraint2D>();
+            IEnumerable<Constraint2D> nodeJointList = urhoNode.GetInheritedComponents<Constraint2D>(true);
             foreach (var joint in nodeJointList)
             {
                 if (joint.TypeName == ConstraintGear2D.TypeNameStatic) continue;
