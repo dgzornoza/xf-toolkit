@@ -6,6 +6,7 @@ using System.Linq;
 using Urho;
 using Urho.Urho2D;
 using XamarinForms.Toolkit.Helpers;
+using XamarinForms.Toolkit.Urho3D.Helpers;
 
 namespace XamarinForms.Toolkit.Urho3D.Rube
 {

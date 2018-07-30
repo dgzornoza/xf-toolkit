@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using Urho;
 
-namespace XamarinForms.Toolkit.Urho3D
+namespace XamarinForms.Toolkit.Urho3D.Helpers
 {
     /// <summary>
-    /// Help extensions whith common mathematical functions and constants.
+    /// Helpers to extend common mathematical functions and constants.
     /// </summary>
-    public static class MathExtensions
+    public static class MathHelpers
     {
         public static Vector2 RadianToVector2(float radian, bool ccw = true)
         {

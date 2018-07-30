@@ -5,9 +5,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Urho;
 
-namespace XamarinForms.Toolkit.Urho3D
+namespace XamarinForms.Toolkit.Urho3D.Helpers
 {
-    public static class NodeExtensions
+    /// <summary>
+    /// Helpers to extend urho node functions
+    /// </summary>
+    public static class NodeHelpers
     {
         #region [Hacks]
 

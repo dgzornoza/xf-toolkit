@@ -68,7 +68,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
 
 
         /// <summary>
-        /// Helper to load rube json file into urho3d node.
+        /// Helper to load rube json file into urho node.
         /// </summary>
         /// <param name="jsonFilePath">file path with physic world in b2djson format from R.U.B.E editor (relative to urho resources)</param>
         /// <param name="urhoNode">Urho2d node where will be loaded</param>
@@ -102,7 +102,7 @@ namespace XamarinForms.Toolkit.Urho3D.Rube
                 if (null == img.Body) continue;
 
                 // probar a cargar la imagen del sprite, ignorar si falla
-                string imageFilePath = Helpers.PathHelpers.SimplifyPath(Path.Combine(jsonFilePath, img.File));
+                string imageFilePath = PathHelpers.SimplifyPath(Path.Combine(jsonFilePath, img.File));
                 Sprite2D sprite = cache.GetSprite2D(imageFilePath);
                 if (sprite == null) continue;
 
