@@ -16,13 +16,13 @@ namespace XamarinForms.Toolkit.Urho3D.Helpers
 
 
         [DllImport("mono-urho", CallingConvention = CallingConvention.Cdecl)]
-        private static extern string Node_GetVar11(IntPtr handle, int key);
+        private static extern string Node_GetVar_11(IntPtr handle, int key);
         /// <summary>
         /// Hack for GetVar (Currently not found in urhosharp). this should be removed when exists in library.
         /// </summary>
         public static string GetVar(this Node node, StringHash key)
         {
-            return Node_GetVar11(node.Handle, key.Code);
+            return Node_GetVar_11(node.Handle, key.Code);
         }
 
         #endregion [Hacks]
